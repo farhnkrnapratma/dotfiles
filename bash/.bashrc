@@ -4,12 +4,12 @@ neofetch
 
 os()
 {
-    echo -e "\033[1;34m  $(grep -E "^PRETTY_NAME=" /etc/os-release | awk -F= '{print $2}' | tr -d '"') \033[0m"
+    echo -e "\e[1;34m $(grep -E "^PRETTY_NAME=" /etc/os-release | awk -F= '{print $2}' | tr -d '"') \e[0m"
 }
 git_branch()
 {
     if git rev-parse --is-inside-work-tree &>/dev/null; then
-        echo -e "\033[1;36m $(git branch --show-current)\033[0m"
+        echo -e "\e[1;36m $(git branch --show-current)\e[0m"
     fi
 }
 git_status() {
@@ -22,14 +22,14 @@ git_status() {
     [[ $ahead -gt 0 ]] && status+="+$ahead"
     [[ $behind -gt 0 ]] && status+="-$behind"
 
-    [[ -n "$status" ]] && echo -e "\033[1;36m$status\033[0m"
+    [[ -n "$status" ]] && echo -e "\e[1;36m$status\e[0m"
 }
 prompt()
 {
-    echo -e "\033[1;36m󰶻  \033[0m"
+    echo -e "\e[1;36m\e[91m"
 }
 
-PS1='\033[1;31m  \u\033[0m $(os)\033[1;32m  \w\033[0m $(git_branch) $(git_status) \n\n$(prompt)'
+PS1='\n\e[1;31m \u\e[0m $(os)\e[1;32m \w\e[0m $(git_branch) $(git_status) \n\n$(prompt) '
 
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
