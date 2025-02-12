@@ -1,0 +1,160 @@
+#!/bin/sh
+
+os="$(grep -E "^NAME=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')"         # OS [NAME]
+vs="$(grep -E "^VERSION=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')"      # [VERSION_ID] with [VERSION_NAME]
+
+if [ $os = "NixOS" ]; then
+    bash_path="/run/current-system/sw/bin/bash"
+else
+    bash_path="/bin/bash"
+fi
+
+B='\033[1;34m'                                                                      # [B]lue|old
+R='\033[0m'                                                                         # [R]eset
+
+echo -e "\nOS -> ${B}$os $vs${R}"                                                   # Print OS [NAME] and [VERSION_ID] with [VERSION_NAME]
+"$bash_path" -c "echo -e 'Bash path -> ${B}$bash_path${R}'"                         # Print Bash path
+
+er="${B}An error occurred:${R}"                                                     # Error message
+dc="$HOME/.config"                                                                  # Path to .config directory
+
+if [ "$PWD" != "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" ]; then
+    echo -e "$er The setup script file must be executed directly inside the ${B}dotfiles${R} directory"
+    exit
+fi
+
+copy()
+{
+    sc=$1       # path to source
+    ds=$2       # path to destination
+
+    if [[ -z "$sc" || -z "$ds" ]]; then
+        echo -e "\n$er Usage: copy <${B}path/to/source/${R}> <${B}path/to/destination/${R}>\n"
+        exit
+    fi
+    if [ -e "$sc" ] && [ -f "$sc" ]; then
+        if [ ! -e "$ds" ]; then
+            echo -e "\n$er Destination directory not found: '${B}$ds${R}'"
+            echo -e "Creating destionation directory: '${B}$ds${R}'"
+            mkdir -p "$ds"
+            echo -e "Created destination directory: '${B}$ds${R}'"
+            echo -e "Copying source file: '${B}$sc${R}' into destination directory: '${B}$ds${R}'"
+            cp "$sc" "$ds"
+        else
+            echo -e "\nCopying source file: '${B}$sc${R}' into destination directory: '${B}$ds${R}'"
+            cp "$sc" "$ds"
+        fi
+        echo -e "Copied source file: ${B}$sc${R} into destination directory: '${B}$ds${R}'"
+    elif [ -e "$sc" ] && [ -d "$sc" ]; then
+        if [ ! -e "$ds" ]; then
+            echo -e "$er Destination directory not found: '${B}$ds${R}'"
+            echo -e "Creating destionation directory: '${B}$ds${R}'"
+            mkdir -p "$ds"
+            echo -e "Created destination directory: '${B}$ds${R}'"
+            echo -e "Copying source directory: '${B}$sc${R}' into destination directory: '${B}$ds${R}'"
+            cp -r "$sc" "$ds"
+        else
+            echo -e "\nCopying source directory: '${B}$sc${R}' into destination directory: '${B}$ds${R}'"
+            cp -r "$sc" "$ds"
+        fi
+        echo -e "Copied source directory: ${B}$sc${R} into destination directory: '${B}$ds${R}'"
+    else
+        echo -e "\n$er File or directory not found: '${B}$sc${R}'"
+    fi
+}
+
+sbash()
+{
+    copy ./bash/.bashrc $HOME
+}
+
+sbtop()
+{
+    copy ./btop $dc
+}
+
+scava()
+{
+    copy ./cava $dc
+}
+
+skitty() 
+{
+    copy ./kitty $dc
+}
+
+sneofetch()
+{
+    copy ./neofetch $dc
+}
+
+stmux()
+{
+    git clone https://github.com/catppuccin/tmux.git $HOME/catppuccin
+    git clone https://github.com/tmux-plugins/tmux-cpu $HOME/tmux-cpu
+    git clone https://github.com/tmux-plugins/tmux-battery $HOME/tmux-battery
+
+    dirs=("$HOME/catppuccin" "$HOME/tmux-cpu" "$HOME/tmux-battery")
+
+    for dir in "${dirs[@]}"; do
+        copy $dir $dc/tmux/plugins/
+        echo -e "Removing: '${B}$dir${R}' from: '${B}$HOME${R}'"
+        rm -rf "$dir"
+        echo -e "Removed: '${B}$dir${R}' from: '${B}$HOME${R}'"
+    done
+
+    copy ./tmux/.tmux.conf $HOME
+}
+
+svim()
+{
+    curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    copy ./vim/.vimrc $HOME
+}
+
+sfull()
+{
+    sbash
+    sbtop
+    scava
+    skitty
+    sneofetch
+    stmux
+    svim
+
+    read -p "Reboot [Y/n]: " rboot
+    rboot="${rboot:-Y}"
+
+    if [[ "$rboot" =~ ^[Yy]$ ]]; then
+        sudo reboot
+    fi
+    exit
+}
+
+while [ 1 ]; do
+    echo -e "\n${B}>>>${R} Configuration Options\n"
+    echo -e "[${B}1${R}] Bash"
+    echo -e "[${B}2${R}] Btop"
+    echo -e "[${B}3${R}] Cava"
+    echo -e "[${B}4${R}] Kitty"
+    echo -e "[${B}5${R}] Neofetch"
+    echo -e "[${B}6${R}] Tmux"
+    echo -e "[${B}7${R}] Vim"
+    echo -e "[${B}8${R}] Configure all"
+    echo -e "[${B}9${R}] Exit\n"
+
+    read -p $'\033[1;34m>>>\033[0m Enter your option: ' option
+
+    case $option in
+        1) sbash ;;
+        2) sbtop ;;
+        3) scava ;;
+        4) skitty ;;
+        5) sneofetch ;;
+        6) stmux ;;
+        7) svim ;;
+        8) sfull ;;
+        9) break ;;
+        *) echo -e "\n$er Invalid option: '${B}$option${R}'" ;;
+    esac
+done
