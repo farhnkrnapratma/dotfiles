@@ -1,19 +1,13 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 os="$(grep -E "^NAME=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')"         # OS [NAME]
 vs="$(grep -E "^VERSION=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')"      # [VERSION_ID] with [VERSION_NAME]
-
-if [ $os = "NixOS" ]; then
-    BASH="/run/current-system/sw/bin/bash"
-else
-    BASH="/bin/bash"
-fi
 
 B='\e[1;34m'                                                                        # [B]lue|old
 R='\e[0m'                                                                           # [R]eset
 
 echo -e "\nOS -> ${B}$os $vs${R}"                                                   # Print OS [NAME] and [VERSION_ID] with [VERSION_NAME]
-"$BASH" -c "echo -e 'Bash path -> ${B}$BASH${R}'"                                   # Print Bash path
+"$BASH" -c "echo -e 'Bash -> ${B}$BASH${R}'"                                        # Print Bash path
 
 er="${B}An error occurred:${R}"                                                     # Error message
 dc="$HOME/.config"                                                                  # Path to .config directory
