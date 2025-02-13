@@ -34,12 +34,7 @@ git_branch()
     fi
 }
 
-prompt()
-{
-    echo -e "🚀"
-}
-
-PS1="\n${pu}╭─(${rs}${rd} \u${rs}${pu})─(${rs}$(os)${pu})─(${rs}${gr} \w${rs}${pu})${rs}$(git_branch)\n${pu}│${rs}\n${pu}╰──${rs}$(prompt) "
+PS1="\n${pu}╭─(${rs}${rd} \u${rs}${pu})─(${rs}$(os)${pu})─(${rs}${gr} \w${rs}${pu})${rs}$(git_branch)\n${pu}│${rs}\n${pu}╰──${rs}🚀 "
 
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
