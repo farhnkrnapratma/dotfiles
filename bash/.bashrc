@@ -24,13 +24,13 @@ git_status() {
     [[ $ahead -gt 0 ]] && status+="+$ahead"
     [[ $behind -gt 0 ]] && status+="-$behind"
 
-    [[ -n "$status" ]] && echo -e "${cy}$status${rs}"
+    [[ -n "$status" ]] && echo -e "${cy} $status${rs}"
 }
 
 git_branch()
 {
     if git rev-parse --is-inside-work-tree &>/dev/null; then
-        echo -e "${pu}─(${rs}${cy} $(git branch --show-current) $(git_status)${rs}${pu})${rs}"
+        echo -e "${pu}─(${rs}${cy} $(git branch --show-current)$(git_status)${rs}${pu})${rs}"
     fi
 }
 
