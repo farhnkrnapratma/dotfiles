@@ -2,16 +2,25 @@ export EDITOR=vim
 
 neofetch
 
+rd='\e[1;31m'  # Red
+gr='\e[1;32m'  # Green
+bl='\e[1;34m'  # Blue
+cy='\e[1;36m'  # Cyan
+pu='\e[1;35m'  # Purple
+rs='\e[0m'     # Reset
+
 os()
 {
-    echo -e "\e[1;34m $(grep -E "^PRETTY_NAME=" /etc/os-release | awk -F= '{print $2}' | tr -d '"') \e[0m"
+    echo -e "${bl} $(grep -E "^PRETTY_NAME=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')${rs}"
 }
+
 git_branch()
 {
     if git rev-parse --is-inside-work-tree &>/dev/null; then
-        echo -e "\e[1;36m $(git branch --show-current)\e[0m"
+        echo -e "${cy} $(git branch --show-current)${rs}"
     fi
 }
+
 git_status() {
     local status ahead behind
     [[ -n $(git status --porcelain 2>/dev/null) ]] && status="✦"
@@ -22,14 +31,16 @@ git_status() {
     [[ $ahead -gt 0 ]] && status+="+$ahead"
     [[ $behind -gt 0 ]] && status+="-$behind"
 
-    [[ -n "$status" ]] && echo -e "\e[1;36m$status\e[0m"
-}
-prompt()
-{
-    echo -e "\e[1;36m\e[0m"
+    [[ -n "$status" ]] && echo -e "${cy}$status${rs}"
 }
 
-PS1='\n\e[1;31m \u\e[0m $(os)\e[1;32m \w\e[0m $(git_branch) $(git_status) \n\n$(prompt) '
+prompt()
+{
+    echo -e "🚀"
+}
+
+# Gunakan tanda kutip ganda agar variabel warna dievaluasi
+PS1="\n${pu}╭─(${rs}${rd} \u${rs}${pu})─(${rs}$(os)${pu})─(${rs}${gr} \w${rs}${pu})─(${rs}$(git_branch) $(git_status)${pu})\n│${rs}\n${pu}╰──${rs}$(prompt) "
 
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
