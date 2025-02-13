@@ -17,7 +17,7 @@ os()
 git_branch()
 {
     if git rev-parse --is-inside-work-tree &>/dev/null; then
-        echo -e "${cy} $(git branch --show-current)${rs}"
+        echo -e "${pu}─(${rs}${cy} $(git branch --show-current)${rs}"
     fi
 }
 
@@ -31,7 +31,7 @@ git_status() {
     [[ $ahead -gt 0 ]] && status+="+$ahead"
     [[ $behind -gt 0 ]] && status+="-$behind"
 
-    [[ -n "$status" ]] && echo -e "${cy}$status${rs}"
+    [[ -n "$status" ]] && echo -e "${cy}$status${rs}${pu})${rs}"
 }
 
 prompt()
@@ -40,7 +40,7 @@ prompt()
 }
 
 # Gunakan tanda kutip ganda agar variabel warna dievaluasi
-PS1="\n${pu}╭─(${rs}${rd} \u${rs}${pu})─(${rs}$(os)${pu})─(${rs}${gr} \w${rs}${pu})─(${rs}$(git_branch) $(git_status)${pu})\n│${rs}\n${pu}╰──${rs}$(prompt) "
+PS1="\n${pu}╭─(${rs}${rd} \u${rs}${pu})─(${rs}$(os)${pu})─(${rs}${gr} \w${rs}${pu})${rs}$(git_branch) $(git_status)\n${pu}│${rs}\n${pu}╰──${rs}$(prompt) "
 
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
