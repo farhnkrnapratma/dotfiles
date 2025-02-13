@@ -26,7 +26,7 @@ git_status() {
 }
 prompt()
 {
-    echo -e "\e[1;36m\e[91m"
+    echo -e "\e[1;36m\e[0m"
 }
 
 PS1='\n\e[1;31m \u\e[0m $(os)\e[1;32m \w\e[0m $(git_branch) $(git_status) \n\n$(prompt) '
