@@ -1,6 +1,44 @@
-export EDITOR=vim
+os_name=$(awk -F= '$1=="NAME" {gsub(/"/, "", $2); print $2}' /etc/os-release)
 
-neofetch
+if [ "$os_name" = "NixOS" ]; then
+    alias nxdr="cd /etc/nixos/"
+    alias nxsw="sudo nixos-rebuild switch"
+    alias nxbt="sudo nixos-rebuild boot"
+    alias nxts="sudo nixos-rebuild test"
+    alias nxbd="sudo nixos-rebuild build"
+    alias nxup="sudo nix-channel --update"
+    alias nxdg="sudo nix-collect-garbage -d"
+fi
+
+if command -v git >/dev/null 2>&1; then
+    alias gtct="git add . && git commit -m"
+    alias gtps="git push"
+    alias gtpl="git pull"
+    alias gtst="git status"
+    alias gtbc="git branch"
+fi
+
+if command -v neofetch >/dev/null 2>&1; then
+    alias neofetch="neofetch --ascii_distro ${os_name}_small"
+    alias cl="clear && neofetch"
+    [ -n "$PS1" ] && neofetch
+fi
+
+if command -v cava >/dev/null 2>&1; then
+    alias cava="TERM=st-256color cava"
+fi
+
+if command -v vim >/dev/null 2>&1; then
+    export EDITOR=vim
+elif command -v hx >/dev/null 2>&1; then
+    export EDITOR=hx
+else
+    export EDITOR=nano
+fi
+
+alias ls="ls --color=auto"
+alias grep="grep --color=auto"
+alias bashrc="$EDITOR ~/.bashrc && source ~/.bashrc"
 
 rd='\e[1;31m'  # Red
 gr='\e[1;32m'  # Green
@@ -35,25 +73,3 @@ git_branch()
 }
 
 PS1="\n${pu}╭─(${rs}${rd} \u${rs}${pu})─(${rs}$(os)${pu})─(${rs}${gr} \w${rs}${pu})${rs}$(git_branch)\n${pu}│${rs}\n${pu}╰──${rs}🚀 "
-
-alias ls="ls --color=auto"
-alias grep="grep --color=auto"
-alias clear="clear && neofetch"
-
-alias bashrc="$EDITOR ~/.bashrc && source ~/.bashrc && clear"
-alias neofetch="neofetch --ascii_distro $(grep -E '^NAME=' /etc/os-release | awk -F= '{print $2}' | tr -d '"')_small"
-alias cava="TERM=st-256color cava"
-
-alias gtct="git add . && git commit -m"
-alias gtps="git push"
-alias gtpl="git pull"
-alias gtst="git status"
-alias gtbc="git branch"
-
-alias nxdr="cd /etc/nixos/"
-alias nxsw="sudo nixos-rebuild switch"
-alias nxbt="sudo nixos-rebuild boot"
-alias nxts="sudo nixos-rebuild test"
-alias nxbd="sudo nixos-rebuild build"
-alias nxup="sudo nix-channel --update"
-alias nxdg="sudo nix-collect-garbage -d"
