@@ -36,7 +36,7 @@ greeter()
 # Description   : Display the icon to the left of the information.
 # Options       : "yes", "no"
 # Default       : "yes"
-show_icon="no"
+show_icon="yes"
 
 # Default Icons
 # Clock
@@ -71,7 +71,7 @@ show_cwd() {
 # Show Pretty OS Name
 show_os() {
     local pretty_name
-    pretty_name=$(awk -F= '$1=="NAME" {gsub(/"/, "", $2); print $2}' /etc/os-release)
+    pretty_name=$(awk -F= '$1=="PRETTY_NAME" {gsub(/"/, "", $2); print $2}' /etc/os-release)
     [[ $show_icon == "yes" ]] && echo -e "${bl}${icon_os} $pretty_name${rs}" || echo -e "${bl}$pretty_name${rs}"
 }
 
@@ -95,7 +95,7 @@ show_git_branch() {
 }
 
 # PS1 Prompt 
-PS1="\n${pu}╭─(${rs}$(show_time)${pu})─(${rs}$(show_user)${pu})─(${rs}$(show_os)${pu})─(${rs}$(show_cwd)${pu})${rs}$(show_git_branch)\n${pu}│${rs}\n${pu}╰──${rs}${icon_prompt} "
+PS1="\n${pu}╭─(${rs}\$(show_time)${pu})─(${rs}$(show_user)${pu})─(${rs}$(show_os)${pu})─(${rs}$(show_cwd)${pu})${rs}\$(show_git_branch)\n${pu}│${rs}\n${pu}╰──${rs}${icon_prompt} "
 
 # ----------------------------------------------------------------------]
 
