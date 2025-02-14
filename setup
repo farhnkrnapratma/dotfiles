@@ -115,14 +115,6 @@ sfull()
     sneofetch
     stmux
     svim
-
-    read -p "Reboot [Y/n]: " rboot
-    rboot="${rboot:-Y}"
-
-    if [[ "$rboot" =~ ^[Yy]$ ]]; then
-        sudo reboot
-    fi
-    exit
 }
 
 while [ 1 ]; do
