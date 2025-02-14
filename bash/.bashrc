@@ -54,7 +54,7 @@ icon_prompt="🚀"
 
 # Show Clock: HH:MM
 show_time() {
-    local clock_text=$(date +%H:%M)
+    local clock_text=$(date +%H:%M:%S)
     [[ $show_icon == "yes" ]] && echo -e "${cy}${icon_clock} $clock_text${rs}" || echo -e "${cy}$clock_text${rs}"
 }
 
