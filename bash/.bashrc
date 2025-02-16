@@ -95,7 +95,7 @@ show_git_branch() {
 }
 
 # PS1 Prompt 
-PS1="\n${pu}╭─(${rs}\$(show_time)${pu})─(${rs}$(show_user)${pu})─(${rs}$(show_os)${pu})─(${rs}$(show_cwd)${pu})${rs}\$(show_git_branch)\n${pu}│${rs}\n${pu}╰──${rs}${icon_prompt} "
+PS1="${pu}╭─(${rs}\$(show_time)${pu})─(${rs}$(show_user)${pu})─(${rs}$(show_os)${pu})─(${rs}$(show_cwd)${pu})${rs}\$(show_git_branch)\n${pu}│${rs}\n${pu}╰──${rs}${icon_prompt} "
 
 # ----------------------------------------------------------------------]
 
@@ -121,10 +121,9 @@ if command -v git >/dev/null 2>&1; then
     alias gtbc="git branch"
 fi
 
-if command -v neofetch >/dev/null 2>&1; then
-    alias neofetch="neofetch --ascii_distro ${os_name}_small"
-    alias clear="clear && greeter && neofetch"
-    [ -n "$PS1" ] && greeter && neofetch
+if command -v tuxfetch >/dev/null 2>&1; then
+    alias clear="clear && greeter && tuxfetch"
+    [ -n "$PS1" ] && greeter && tuxfetch
 else
     alias clear="clear && greeter"
     [ -n "$PS1" ] && greeter
