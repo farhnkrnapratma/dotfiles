@@ -26,16 +26,16 @@ if test "$os_name" = "Arch Linux"
     alias pacin="sudo pacman -S"
     alias pacrm="sudo pacman -Rns"
     alias pacrd="sudo pacman -Rdd"
-    alias paccl="sudo pacman -Rs $(pacman -Qdtq)"
-    alias paruup="paru -Syu"
-    alias paruin="paru -S"
-    alias parurm="paru -Rns"
-    alias parurd="paru -Rdd"
-    alias parucl="paru -Rs $(paru -Qdtq)"
-    alias u="paru -Syuu"
+    alias paccl="sudo pacman -Rns $(pacman -Qdtq)"
+    alias yayup="yay -Syu"
+    alias yayin="yay -S"
+    alias yayrm="yay -Rns"
+    alias yayrd="yay -Rdd"
+    alias yaycl="yay -Rns $(yay -Qdtq)"
+    alias u="yay -Syuu"
 end
 
-alias d="sudo rm -rf"
+alias d="rm -rf"
 alias b="z .."
 alias x="exit"
 alias c="clear"
@@ -47,14 +47,14 @@ alias fishc="e ~/.config/fish/config.fish && source ~/.config/fish/config.fish"
 function i
     sudo pacman -S $argv 2>/dev/null
     if test $status -ne 0
-        paru -S $argv
+        yay -S $argv
     end
 end
 
 function r
     sudo pacman -Rns $argv 2>/dev/null
     if test $status -ne 0
-        paru -Rns $argv
+        yay -Rns $argv
     end
 end
 

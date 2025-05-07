@@ -1,8 +1,8 @@
 (
     output: "all",
-    source: Path("/home/farhnkrnapratma/Pictures/minimalistic"),
+    source: Path("/home/farhnkrnapratma/Desktop/Project/catppuccin/wallpaper/romb.png"),
     filter_by_theme: true,
-    rotation_frequency: 1800,
+    rotation_frequency: 300,
     filter_method: Lanczos,
     scaling_mode: Zoom,
     sampling_method: Alphanumeric,

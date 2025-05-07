@@ -1,9 +1,11 @@
-conf="$HOME/.config/"
+#!/bin/sh
 
-mv ./cosmic/ $conf
-mv ./fish/ $conf
-mv ./helix/ $conf
-mv ./micro/ $conf
-mv ./nvim/ $conf
-mv ./warp-terminal/ $conf
-mv ./zed/ $conf
+conf="$HOME/.config/"
+ 
+cp ./cosmic/ $conf
+cp ./fish/ $conf
+cp ./helix/ $conf
+cp ./micro/ $conf
+cp ./nvim/ $conf
+cp ./warp-terminal/ $conf
+cp ./zed/ $conf

@@ -1,0 +1,16 @@
+{
+    (
+        modifiers: [
+            Super,
+            Shift,
+        ],
+        key: "m",
+    ): Minimize,
+    (
+        modifiers: [
+            Super,
+            Shift,
+        ],
+        key: "s",
+    ): ToggleSticky,
+}

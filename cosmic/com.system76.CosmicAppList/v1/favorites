@@ -1,17 +1,11 @@
 [
     "dev.warp.Warp",
-    "code",
     "dev.zed.Zed",
+    "code",
     "firefox",
     "org.mozilla.Thunderbird",
-    "brave-browser",
     "spotify",
     "discord",
     "org.telegram.desktop",
     "signal-desktop",
-    "org.gnome.Calendar",
-    "org.gnome.Snapshot",
-    "org.qbittorrent.qBittorrent",
-    "electrum",
-    "vlc",
 ]
