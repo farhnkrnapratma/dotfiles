@@ -35,6 +35,7 @@ if test "$os_name" = "Arch Linux"
     alias u="yay -Syuu"
 end
 
+alias sudo="sudo-rs"
 alias d="rm -rf"
 alias b="z .."
 alias x="exit"
