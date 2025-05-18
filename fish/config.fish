@@ -7,7 +7,7 @@ function loopfetch
         clear
         sleep 0.5
         fastfetch
-        sleep 3
+        sleep 5
     end
 end
 
@@ -22,11 +22,13 @@ function syslogbar
 
     # Ensure interval is a positive number (including decimals)
     if not string match -qr '^(0|[1-9][0-9]*)(\.[0-9]+)?$' -- $interval
-        echo "\u26a0\ufe0f Invalid interval: '$interval'. Must be a positive number."
+        echo "Invalid interval: '$interval'. Must be a positive number."
         return 1
     end
 
-    if math "$interval" = 0
+    # Convert to float and check if it's > 0
+    set interval_val (math "$interval")
+    if test $interval_val -le 0
         echo "Invalid interval: '$interval'. Must be greater than 0."
         return 1
     end
@@ -35,7 +37,7 @@ function syslogbar
     set iface (ip route get 8.8.8.8 2>/dev/null | string match -r 'dev\s+(\S+)' | string split ' ')[-1]
 
     if test -z "$iface"
-        echo "\u26a0\ufe0f Unable to determine network interface."
+        echo "Unable to determine network interface."
         return 1
     end
 
@@ -48,28 +50,19 @@ function syslogbar
 
     while true
         set user (whoami)
+        set host (hostname)
 
-        if type -q hostname
-            set host (hostname)
-        else
-            set host (cat /etc/hostname)
-        end
-
+        # Battery
         set battery_path /sys/class/power_supply/BAT*
         set battery (cat $battery_path/capacity 2>/dev/null)
         set battery_status (cat $battery_path/status 2>/dev/null)
 
-        if test -z "$battery"
-            set battery "N/A"
-            set charge_display ""
-        else if test "$battery_status" = "Charging"
-            set charge_display " (Charging)"
-        else
-            set charge_display ""
-        end
-
+        # Other system info
         set datetime (date '+%H:%M:%S %d/%m/%Y')
+        set kernel (uname -r)
+        set uptime (uptime -p | string replace -r '^up ' '')
 
+        # Network rate
         set rx_now (cat /sys/class/net/$iface/statistics/rx_bytes)
         set tx_now (cat /sys/class/net/$iface/statistics/tx_bytes)
         set t_now (date +%s)
@@ -83,11 +76,14 @@ function syslogbar
             set tx_rate (math --scale=1 "($tx_now - $tx_prev) / 1024 / $delta_t")
         end
 
+        # Output
         echo -n (set_color blue)"$user "(set_color cyan)"$host "
         echo -n (set_color yellow)"$datetime "
-        echo -n (set_color green)"$battery%$charge_display "
-        echo -n (set_color red)"$(printf "%.1f" $tx_rate) KB/s (Up) "
-        echo (set_color red)"$(printf "%.1f" $rx_rate) KB/s (Down)"
+        echo -n (set_color green)"$battery " 
+        echo -n (set_color brmagenta)"$kernel $uptime "
+        echo -n (set_color red)"↑ $(printf "%.1f" $tx_rate) KB/s "
+        echo -n (set_color red)"↓ $(printf "%.1f" $rx_rate) KB/s"
+        echo (set_color normal)
 
         set rx_prev $rx_now
         set tx_prev $tx_now
