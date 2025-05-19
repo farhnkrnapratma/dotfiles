@@ -1,11 +1,13 @@
 [
+    "GitHub Desktop",
     "dev.warp.Warp",
+    "com.system76.CosmicTerm",
     "dev.zed.Zed",
     "code",
     "firefox",
     "org.mozilla.Thunderbird",
     "spotify",
     "discord",
-    "org.telegram.desktop",
     "signal-desktop",
+    "org.telegram.desktop",
 ]

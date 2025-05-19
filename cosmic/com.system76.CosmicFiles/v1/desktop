@@ -1,7 +1,7 @@
 (
     grid_spacing: 150,
     icon_size: 125,
-    show_content: true,
-    show_mounted_drives: true,
-    show_trash: true,
+    show_content: false,
+    show_mounted_drives: false,
+    show_trash: false,
 )

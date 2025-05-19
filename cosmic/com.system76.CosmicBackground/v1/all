@@ -1,6 +1,6 @@
 (
     output: "all",
-    source: Path("/home/farhnkrnapratma/Desktop/Project/catppuccin/wallpaper/romb.png"),
+    source: Path("/home/farhnkrnapratma/Pictures/Wallpaper/planet-night-sky.jpg"),
     filter_by_theme: true,
     rotation_frequency: 300,
     filter_method: Lanczos,

@@ -3,7 +3,7 @@
     folders_first: true,
     show_hidden: false,
     icon_sizes: (
-        list: 75,
+        list: 175,
         grid: 100,
     ),
     single_click: false,
